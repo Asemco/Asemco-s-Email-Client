@@ -30,16 +30,16 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.label4 = new System.Windows.Forms.Label();
+            this.txtEmailTo = new System.Windows.Forms.TextBox();
+            this.txtEmailFrom = new System.Windows.Forms.TextBox();
+            this.txtEmailSubject = new System.Windows.Forms.TextBox();
+            this.btnEmailSend = new System.Windows.Forms.Button();
+            this.txtEmailMessage = new System.Windows.Forms.RichTextBox();
+            this.lblEmailMessage = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblEmailFrom = new System.Windows.Forms.Label();
+            this.lblEmailTo = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -57,15 +57,15 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.textBox3);
-            this.tabPage1.Controls.Add(this.textBox2);
-            this.tabPage1.Controls.Add(this.textBox1);
-            this.tabPage1.Controls.Add(this.button1);
-            this.tabPage1.Controls.Add(this.richTextBox1);
-            this.tabPage1.Controls.Add(this.label4);
+            this.tabPage1.Controls.Add(this.txtEmailTo);
+            this.tabPage1.Controls.Add(this.txtEmailFrom);
+            this.tabPage1.Controls.Add(this.txtEmailSubject);
+            this.tabPage1.Controls.Add(this.btnEmailSend);
+            this.tabPage1.Controls.Add(this.txtEmailMessage);
+            this.tabPage1.Controls.Add(this.lblEmailMessage);
             this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Controls.Add(this.lblEmailFrom);
+            this.tabPage1.Controls.Add(this.lblEmailTo);
             this.tabPage1.Location = new System.Drawing.Point(8, 39);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -74,14 +74,53 @@
             this.tabPage1.Text = "Send Emails";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // label4
+            // txtEmailTo
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(49, 404);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(106, 25);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Message:";
+            this.txtEmailTo.Location = new System.Drawing.Point(185, 73);
+            this.txtEmailTo.Name = "txtEmailTo";
+            this.txtEmailTo.Size = new System.Drawing.Size(717, 31);
+            this.txtEmailTo.TabIndex = 8;
+            // 
+            // txtEmailFrom
+            // 
+            this.txtEmailFrom.Location = new System.Drawing.Point(185, 184);
+            this.txtEmailFrom.Name = "txtEmailFrom";
+            this.txtEmailFrom.Size = new System.Drawing.Size(717, 31);
+            this.txtEmailFrom.TabIndex = 7;
+            // 
+            // txtEmailSubject
+            // 
+            this.txtEmailSubject.Location = new System.Drawing.Point(185, 282);
+            this.txtEmailSubject.Name = "txtEmailSubject";
+            this.txtEmailSubject.Size = new System.Drawing.Size(717, 31);
+            this.txtEmailSubject.TabIndex = 6;
+            // 
+            // btnEmailSend
+            // 
+            this.btnEmailSend.Location = new System.Drawing.Point(320, 794);
+            this.btnEmailSend.Name = "btnEmailSend";
+            this.btnEmailSend.Size = new System.Drawing.Size(312, 79);
+            this.btnEmailSend.TabIndex = 5;
+            this.btnEmailSend.Text = "Send Email";
+            this.btnEmailSend.UseVisualStyleBackColor = true;
+            this.btnEmailSend.Click += new System.EventHandler(this.btnEmailSend_Click);
+            // 
+            // txtEmailMessage
+            // 
+            this.txtEmailMessage.Location = new System.Drawing.Point(185, 404);
+            this.txtEmailMessage.Name = "txtEmailMessage";
+            this.txtEmailMessage.Size = new System.Drawing.Size(717, 359);
+            this.txtEmailMessage.TabIndex = 4;
+            this.txtEmailMessage.Text = "";
+            // 
+            // lblEmailMessage
+            // 
+            this.lblEmailMessage.AutoSize = true;
+            this.lblEmailMessage.Location = new System.Drawing.Point(49, 404);
+            this.lblEmailMessage.Name = "lblEmailMessage";
+            this.lblEmailMessage.Size = new System.Drawing.Size(106, 25);
+            this.lblEmailMessage.TabIndex = 3;
+            this.lblEmailMessage.Text = "Message:";
             // 
             // label3
             // 
@@ -92,23 +131,23 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "Subject:";
             // 
-            // label2
+            // lblEmailFrom
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(49, 184);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 25);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "From:";
+            this.lblEmailFrom.AutoSize = true;
+            this.lblEmailFrom.Location = new System.Drawing.Point(49, 184);
+            this.lblEmailFrom.Name = "lblEmailFrom";
+            this.lblEmailFrom.Size = new System.Drawing.Size(67, 25);
+            this.lblEmailFrom.TabIndex = 1;
+            this.lblEmailFrom.Text = "From:";
             // 
-            // label1
+            // lblEmailTo
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(49, 73);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 25);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "To:";
+            this.lblEmailTo.AutoSize = true;
+            this.lblEmailTo.Location = new System.Drawing.Point(49, 73);
+            this.lblEmailTo.Name = "lblEmailTo";
+            this.lblEmailTo.Size = new System.Drawing.Size(43, 25);
+            this.lblEmailTo.TabIndex = 0;
+            this.lblEmailTo.Text = "To:";
             // 
             // tabPage2
             // 
@@ -119,44 +158,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Receive Emails";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(185, 404);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(717, 359);
-            this.richTextBox1.TabIndex = 4;
-            this.richTextBox1.Text = "";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(320, 794);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(312, 79);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Send Email";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(185, 282);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(717, 31);
-            this.textBox1.TabIndex = 6;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(185, 184);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(717, 31);
-            this.textBox2.TabIndex = 7;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(185, 73);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(717, 31);
-            this.textBox3.TabIndex = 8;
             // 
             // Form1
             // 
@@ -178,15 +179,15 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblEmailMessage;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label lblEmailFrom;
+        private System.Windows.Forms.Label lblEmailTo;
+        private System.Windows.Forms.RichTextBox txtEmailMessage;
+        private System.Windows.Forms.TextBox txtEmailTo;
+        private System.Windows.Forms.TextBox txtEmailFrom;
+        private System.Windows.Forms.TextBox txtEmailSubject;
+        private System.Windows.Forms.Button btnEmailSend;
     }
 }
 

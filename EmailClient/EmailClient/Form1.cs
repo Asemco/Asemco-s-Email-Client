@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Security;
 
 namespace EmailClient
 {
@@ -16,10 +17,35 @@ namespace EmailClient
 
         bool hasAttachment = false;
         string[] aryAttachments;
+        SslStream networkStream;
+        StreamReader readStream;
+        string username = PrivateVars.Email.Username;
+        string password = PrivateVars.Email.Password;
 
         public Form1()
         {
             InitializeComponent();
+        }
+        
+        private string PopCommand(SslStream networkStream, string serverCommand)
+        {
+            try
+            {
+                serverCommand = serverCommand + "\r\n";
+                Byte[] serverBytes = Encoding.ASCII.GetBytes(serverCommand);
+
+                StreamReader readStreamBytes;
+                string serverResponse;
+
+                networkStream.Write(serverBytes, 0, serverBytes.Length);
+                readStreamBytes = new StreamReader(networkStream);
+                serverResponse = readStreamBytes.ReadLine();
+
+                return serverResponse;
+            } catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         private void btnEmailSend_Click(object sender, EventArgs e)
@@ -34,13 +60,12 @@ namespace EmailClient
             string emailSubject = txtEmailSubject.Text.Trim();
             string emailMessage = txtEmailMessage.Text.Trim();
             SmtpClient smtpServer = new SmtpClient();
-            smtpServer.Host = "mail.gmx.com";
+            smtpServer.Host = PrivateVars.Email.SMTPHost;
             smtpServer.Timeout = 15;
             smtpServer.Port = 25;
             smtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
 
-            string username = PrivateVars.Email.Username;
-            string password = PrivateVars.Email.Password;
+
             smtpServer.Credentials = new NetworkCredential(username, password);
 
             MailMessage message = new MailMessage(emailFrom, emailTo);
@@ -117,6 +142,53 @@ namespace EmailClient
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            TcpClient popServer = new TcpClient();
+            
+            string popHost = PrivateVars.Email.POP3Host;
+
+            try
+            {
+                popServer.Connect(popHost, 995);
+
+                networkStream = new SslStream(popServer.GetStream());
+                networkStream.AuthenticateAsClient(PrivateVars.Email.POP3Host);
+                readStream = new StreamReader(networkStream);
+
+                string returnString = readStream.ReadLine() + "\r\n";
+                txtServerResponse.Text = returnString;
+
+                txtServerResponse.Text += PopCommand(networkStream, "USER " + username) + "\r\n";
+                string result = PopCommand(networkStream, "PASS " + password) + "\r\n";
+                if (result.Substring(0, 4) == "-ERR")
+                    txtServerResponse.Text = "Invalid Password";
+                txtServerResponse.Text += result;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void QuitServer()
+        {
+            try
+            {
+                string serverResponse = PopCommand(networkStream, "QUIT") + "\r\n";
+                MessageBox.Show(serverResponse);
+            } catch (Exception ex)
+            {
+                MessageBox.Show("Could not quit: " +ex.Message);
+            }
+        }
+
+        private void btnQuit_Click(object sender, EventArgs e)
+        {
+            QuitServer();
         }
     }
 }

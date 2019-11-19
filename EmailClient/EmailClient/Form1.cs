@@ -62,7 +62,8 @@ namespace EmailClient
             SmtpClient smtpServer = new SmtpClient();
             smtpServer.Host = PrivateVars.Email.SMTPHost;
             smtpServer.Timeout = 15;
-            smtpServer.Port = 25;
+            smtpServer.Port = 587;
+            smtpServer.EnableSsl = true;
             smtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
 
 
@@ -73,6 +74,9 @@ namespace EmailClient
             message.Headers.Add("Reply-To", emailFrom);
             message.Headers.Add("X-Organization", "Asemco's Mail");
 
+            message.Body = emailMessage;
+            message.Subject = emailSubject;
+           
             if (hasAttachment)
             {
                 for (int i = 0; i < aryAttachments.Length; i++)
@@ -102,7 +106,7 @@ namespace EmailClient
             if (e.Error != null)
                 MessageBox.Show(token + e.Error.ToString());
             else
-                MessageBox.Show("You E-mail has been sent successfully!");
+                MessageBox.Show("Your E-mail has been sent successfully!");
         }
 
         private void btnEmailAttach_Click(object sender, EventArgs e)

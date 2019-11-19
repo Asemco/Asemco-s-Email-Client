@@ -36,10 +36,12 @@
             this.btnEmailSend = new System.Windows.Forms.Button();
             this.txtEmailMessage = new System.Windows.Forms.RichTextBox();
             this.lblEmailMessage = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lblEmailSubject = new System.Windows.Forms.Label();
             this.lblEmailFrom = new System.Windows.Forms.Label();
             this.lblEmailTo = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnEmailAttach = new System.Windows.Forms.Button();
+            this.txtEmailAttach = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -57,13 +59,15 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.txtEmailAttach);
+            this.tabPage1.Controls.Add(this.btnEmailAttach);
             this.tabPage1.Controls.Add(this.txtEmailTo);
             this.tabPage1.Controls.Add(this.txtEmailFrom);
             this.tabPage1.Controls.Add(this.txtEmailSubject);
             this.tabPage1.Controls.Add(this.btnEmailSend);
             this.tabPage1.Controls.Add(this.txtEmailMessage);
             this.tabPage1.Controls.Add(this.lblEmailMessage);
-            this.tabPage1.Controls.Add(this.label3);
+            this.tabPage1.Controls.Add(this.lblEmailSubject);
             this.tabPage1.Controls.Add(this.lblEmailFrom);
             this.tabPage1.Controls.Add(this.lblEmailTo);
             this.tabPage1.Location = new System.Drawing.Point(8, 39);
@@ -107,34 +111,34 @@
             // 
             // txtEmailMessage
             // 
-            this.txtEmailMessage.Location = new System.Drawing.Point(185, 404);
+            this.txtEmailMessage.Location = new System.Drawing.Point(185, 458);
             this.txtEmailMessage.Name = "txtEmailMessage";
-            this.txtEmailMessage.Size = new System.Drawing.Size(717, 359);
+            this.txtEmailMessage.Size = new System.Drawing.Size(717, 305);
             this.txtEmailMessage.TabIndex = 4;
             this.txtEmailMessage.Text = "";
             // 
             // lblEmailMessage
             // 
             this.lblEmailMessage.AutoSize = true;
-            this.lblEmailMessage.Location = new System.Drawing.Point(49, 404);
+            this.lblEmailMessage.Location = new System.Drawing.Point(49, 458);
             this.lblEmailMessage.Name = "lblEmailMessage";
             this.lblEmailMessage.Size = new System.Drawing.Size(106, 25);
             this.lblEmailMessage.TabIndex = 3;
             this.lblEmailMessage.Text = "Message:";
             // 
-            // label3
+            // lblEmailSubject
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(49, 289);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 25);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Subject:";
+            this.lblEmailSubject.AutoSize = true;
+            this.lblEmailSubject.Location = new System.Drawing.Point(49, 289);
+            this.lblEmailSubject.Name = "lblEmailSubject";
+            this.lblEmailSubject.Size = new System.Drawing.Size(90, 25);
+            this.lblEmailSubject.TabIndex = 2;
+            this.lblEmailSubject.Text = "Subject:";
             // 
             // lblEmailFrom
             // 
             this.lblEmailFrom.AutoSize = true;
-            this.lblEmailFrom.Location = new System.Drawing.Point(49, 184);
+            this.lblEmailFrom.Location = new System.Drawing.Point(52, 184);
             this.lblEmailFrom.Name = "lblEmailFrom";
             this.lblEmailFrom.Size = new System.Drawing.Size(67, 25);
             this.lblEmailFrom.TabIndex = 1;
@@ -143,7 +147,7 @@
             // lblEmailTo
             // 
             this.lblEmailTo.AutoSize = true;
-            this.lblEmailTo.Location = new System.Drawing.Point(49, 73);
+            this.lblEmailTo.Location = new System.Drawing.Point(52, 73);
             this.lblEmailTo.Name = "lblEmailTo";
             this.lblEmailTo.Size = new System.Drawing.Size(43, 25);
             this.lblEmailTo.TabIndex = 0;
@@ -158,6 +162,23 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Receive Emails";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnEmailAttach
+            // 
+            this.btnEmailAttach.Location = new System.Drawing.Point(54, 371);
+            this.btnEmailAttach.Name = "btnEmailAttach";
+            this.btnEmailAttach.Size = new System.Drawing.Size(85, 34);
+            this.btnEmailAttach.TabIndex = 9;
+            this.btnEmailAttach.Text = "Attach";
+            this.btnEmailAttach.UseVisualStyleBackColor = true;
+            this.btnEmailAttach.Click += new System.EventHandler(this.btnEmailAttach_Click);
+            // 
+            // txtEmailAttach
+            // 
+            this.txtEmailAttach.Location = new System.Drawing.Point(185, 371);
+            this.txtEmailAttach.Name = "txtEmailAttach";
+            this.txtEmailAttach.Size = new System.Drawing.Size(717, 31);
+            this.txtEmailAttach.TabIndex = 10;
             // 
             // Form1
             // 
@@ -180,7 +201,7 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label lblEmailMessage;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblEmailSubject;
         private System.Windows.Forms.Label lblEmailFrom;
         private System.Windows.Forms.Label lblEmailTo;
         private System.Windows.Forms.RichTextBox txtEmailMessage;
@@ -188,6 +209,8 @@
         private System.Windows.Forms.TextBox txtEmailFrom;
         private System.Windows.Forms.TextBox txtEmailSubject;
         private System.Windows.Forms.Button btnEmailSend;
+        private System.Windows.Forms.TextBox txtEmailAttach;
+        private System.Windows.Forms.Button btnEmailAttach;
     }
 }
 

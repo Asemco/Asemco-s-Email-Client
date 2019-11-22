@@ -122,6 +122,58 @@ namespace EmailClient
             }
         }
 
+        private void btnQuit_Click(object sender, EventArgs e)
+        {
+            QuitServer();
+        }
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            int i = emailList.SelectedIndex + 1;
+
+            try
+            {
+                string serverResponse;
+                serverResponse = PopCommand(networkStream, "DELE " + i.ToString());
+                txtServerResponse.Text += serverResponse + "\r\n";
+                emailList.Items[emailList.SelectedIndex] += " | Marked for Deletion";
+                
+
+                txtEmail.Text = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error while deleting: " + ex.Message);
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            string serverResponse = PopCommand(networkStream, "RSET");
+            txtServerResponse.Text += serverResponse + "\r\n";
+            emailList.Items[emailList.SelectedIndex] = (emailList.Items[emailList.SelectedIndex] as string).Replace("| Marked for Deletion", "");
+        }
+
+        private void emailList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string indexNumber;
+            string strRetrieve;
+
+            if ((sender as ListBox).Text == "" || (sender as ListBox).Text.Contains("Marked for Deletion"))
+                return;
+
+            try
+            {
+                indexNumber = (emailList.SelectedIndex + 1).ToString();
+                strRetrieve = "RETR " + indexNumber + "\r\n";
+                if (indexNumber != "0")
+                    GetEmail(strRetrieve);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occurred: " + ex.Message);
+            }
+        }
+
         private void sendEmail()
         {
             string emailTo = txtEmailTo.Text.Trim();
@@ -134,7 +186,6 @@ namespace EmailClient
             smtpServer.Port = 587;
             smtpServer.EnableSsl = true;
             smtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
-
 
             smtpServer.Credentials = new NetworkCredential(username, password);
 
@@ -234,127 +285,70 @@ namespace EmailClient
             }
         }
 
-        private void btnQuit_Click(object sender, EventArgs e)
-        {
-            QuitServer();
-        }
-
-        private void emailList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string indexNumber;
-            string strRetrieve;
-            txtEmail.Text = "";
-
-            try
-            {
-                indexNumber = (emailList.SelectedIndex + 1).ToString();
-                strRetrieve = "RETR " + indexNumber + "\r\n";
-                GetEmail(strRetrieve);
-            } catch (Exception ex)
-            {
-                MessageBox.Show("Error occurred: " + ex.Message);
-            }
-        }
-
         private void GetEmail(string serverCommand)
         {
             StreamReader readStream;
+            string textLine = "";
 
             try
             {
+                // Prepare the command for the stream
                 txtServerResponse.Text += "Outgoing: " + serverCommand;
-                txtServerResponse.ScrollToCaret();
                 Byte[] serverBytes = Encoding.ASCII.GetBytes(serverCommand);
 
-                string textLine = "";
-
+                // Send the command
                 networkStream.Write(serverBytes, 0, serverBytes.Length);
-                // Knock out the OK.
-                readStream = new StreamReader(networkStream);
-                MessageBox.Show(readStream.ReadLine());
 
-                networkStream.Write(serverBytes, 0, serverBytes.Length);
+                // Open the read strem
+                // Also, Knock out the OK reply.
                 readStream = new StreamReader(networkStream);
+                
+                // USE FOR DEBUGGING
+                //MessageBox.Show(readStream.ReadLine());
 
-                while (readStream.Peek() != -1)
+                // The end of the stream is a ".", so we read lines until we reach the "."
+                string input;
+                while ((input = readStream.ReadLine()) != ".")
                 {
-                    string input = readStream.ReadLine(); 
-                    textLine +=  input + "\r\n";
-
-                    if (input == ".\r\n")
+                    // If we reach an empty line, we add an extra set of EoL characters to process the email a little easier
+                    if (input.Length == 0)
                     {
-                        MessageBox.Show("Here's a dot");
+                        textLine += "\r\n\r\n";
+                        continue;
                     }
 
-                    if (textLine.Length <= 3)
-                        break;
-
-                    if (textLine.Substring(0, 4) == "-ERR")
+                    // If we encounter an error attempting to get the email body, we print it and return.
+                    if (input.Length >= 4 && input.Substring(0, 4) == "-ERR")
                     {
-                        //PopCommand(networkStream, "LIST " + 1.ToString());
-                        GetEmail(serverCommand);
-                        break;
+                        MessageBox.Show("An POP3 related error occurred while retriving the email: " + input);
+                        return;
                     }
+
+                    textLine += input + "\r\n";
                 }
 
-                if (textLine.Length <= 3)
-                {
-                    GetEmail(serverCommand);
-                    return;
-                }
-
+                // Seperate the Boys from the Men
                 int lineFeeds = textLine.IndexOf("\r\n\r\n");
 
+                // Boys
                 string emailHeader;
+                // Men
                 string emailBody;
 
+                // This shouldn't run if there's an error, or for some read reason, we don't properly receive email content.
                 if (lineFeeds != 0 && lineFeeds > 0)
                 {
                     emailHeader = textLine.Substring(0, lineFeeds - 1);
                     emailBody = textLine.Substring(lineFeeds + 1, textLine.Length - emailHeader.Length - 3);
+                    emailBody.Replace("\r\n\r\n", "\r\n");
+                    emailBody.Trim();
                     txtEmail.Text = emailBody;
                     
                 }
-                // Knock out the ".".
-                networkStream.Write(serverBytes, 0, serverBytes.Length);
-                readStream = new StreamReader(networkStream);
-
-                readStream.Dispose();
-                //if ()
-                //{
-                //    MessageBox.Show("Here's a dot");
-                //}
-                //MessageBox.Show(readStream.ReadLine());
-                //MessageBox.Show("Last Character: " +readStream.Peek().ToString()); 
-
             } catch (Exception ex)
             {
                 MessageBox.Show("Failed to get the email: " + ex.Message);
             } 
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            int i = emailList.SelectedIndex + 1;
-
-            try
-            {
-                string serverResponse;
-                serverResponse = PopCommand(networkStream, "DELE " + i.ToString());
-                txtServerResponse.Text += serverResponse + "\r\n";
-                emailList.Items[i - 1] += "Marked for Deletion";
-
-                txtEmail.Text = "";
-            } catch (Exception ex)
-            {
-                MessageBox.Show("Error while deleting: " + ex.Message);
-            }
-        }
-
-        private void btnReset_Click(object sender, EventArgs e)
-        {
-            string serverResponse = PopCommand(networkStream, "RSET");
-            txtServerResponse.Text += serverResponse + "\r\n";
         }
     }
 }
